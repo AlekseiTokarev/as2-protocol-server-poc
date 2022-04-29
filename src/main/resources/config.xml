@@ -4,7 +4,7 @@
                 filename="%home%/openAs2_certs.p12"
                 password="testas2"
                 interval="300"/>
-  <partnerships classname="com.helger.as2lib.partner.SelfFillingPartnershipFactory"
+  <partnerships classname="com.helger.as2lib.partner.xml.XMLPartnershipFactory"
                 filename="%home%/partnerships.xml"/>
 
   <processor classname="com.helger.as2lib.processor.DefaultMessageProcessor"
