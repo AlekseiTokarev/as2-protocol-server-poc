@@ -17,5 +17,11 @@
             port="10080"
             errordir="data/inbox/error"
             errorformat="$msg.sender.as2_id$, $msg.receiver.as2_id$, $msg.headers.message-id$"/>
+    <module classname="com.helger.as2lib.processor.storage.MessageFileModule"
+            filename="%home%/../data/$msg.sender.as2_id$-$msg.receiver.as2_id$/inbox/$msg.content-disposition.filename$-$msg.headers.message-id$"
+            header="%home%/../data/$msg.sender.as2_id$-$msg.receiver.as2_id$/msgheaders/$date.yyyy-MM-dd$/$msg.content-disposition.filename$-$msg.headers.message-id$"
+            protocol="as2"
+            tempdir="%home%/../data/temp"/>
+
   </processor>
 </openas2>
