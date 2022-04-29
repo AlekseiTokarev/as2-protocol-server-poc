@@ -1,0 +1,21 @@
+plugins {
+	id 'org.springframework.boot' version '2.6.7'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+sourceCompatibility = '17'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'com.helger.as2:as2-lib:4.10.1'
+	implementation 'com.helger.as2:as2-servlet:4.10.1'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
