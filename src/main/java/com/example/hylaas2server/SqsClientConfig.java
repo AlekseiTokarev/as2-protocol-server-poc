@@ -3,6 +3,7 @@ package com.example.hylaas2server;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import software.amazon.awssdk.auth.credentials.AnonymousCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.sqs.SqsClient;
@@ -13,6 +14,7 @@ import java.net.URI;
 public class SqsClientConfig {
 
     @Bean
+    @DependsOn(value = "as2ServletXMLSession")
     SqsProcessorModule sqsProcessorModule(SqsClient sqsClient) {
         SqsProcessorModule singleton = SqsProcessorModule.getInstance();
         singleton.setSqsClient(sqsClient);
