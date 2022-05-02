@@ -15,7 +15,6 @@ import org.springframework.util.ResourceUtils;
 
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -47,7 +46,7 @@ class MyAS2ReceiveServlet extends AbstractXServlet {
 
     @Override
     @OverridingMethodsMustInvokeSuper
-    public void init() throws ServletException {
+    public void init() {
         // Multipart is handled specifically inside
         settings().setMultipartEnabled(false);
         handlerRegistry().registerHandler(EHttpMethod.POST, new AS2ReceiveXServletHandlerConstantSession(xmlSession), false);
