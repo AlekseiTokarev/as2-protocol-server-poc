@@ -22,6 +22,7 @@
             header="%home%/../data/$msg.sender.as2_id$-$msg.receiver.as2_id$/msgheaders/$date.yyyy-MM-dd$/$msg.content-disposition.filename$-$msg.headers.message-id$"
             protocol="as2"
             tempdir="%home%/../data/temp"/>
+    <module classname="com.example.hylaas2server.SqsProcessorModule" />
 
   </processor>
 </openas2>
