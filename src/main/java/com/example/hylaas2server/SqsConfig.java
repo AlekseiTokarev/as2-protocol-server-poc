@@ -11,7 +11,7 @@ import software.amazon.awssdk.services.sqs.SqsClient;
 import java.net.URI;
 
 @Configuration
-public class SqsClientConfig {
+public class SqsConfig {
 
     @Bean
     @DependsOn(value = "as2ServletXMLSession")
