@@ -1,7 +1,7 @@
 <openas2>
   <certificates classname="com.helger.as2lib.cert.CertificateFactory"
                 type="pkcs12"
-                filename="%home%/openAs2_certs.p12"
+                filename="classpath:openAs2_certs.p12"
                 password="testas2"
                 interval="300"/>
   <partnerships classname="com.helger.as2lib.partner.xml.XMLPartnershipFactory"
@@ -13,15 +13,12 @@
 
     <!-- Required to receive messages -->
     <!-- port is required internally - simply ignore it for servlets -->
-    <module classname="com.helger.as2servlet.util.AS2ServletReceiverModule"      
-            port="10080"
-            errordir="data/inbox/error"
-            errorformat="$msg.sender.as2_id$, $msg.receiver.as2_id$, $msg.headers.message-id$"/>
-    <module classname="com.helger.as2lib.processor.storage.MessageFileModule"
-            filename="%home%/../data/$msg.sender.as2_id$-$msg.receiver.as2_id$/inbox/$msg.content-disposition.filename$-$msg.headers.message-id$"
-            header="%home%/../data/$msg.sender.as2_id$-$msg.receiver.as2_id$/msgheaders/$date.yyyy-MM-dd$/$msg.content-disposition.filename$-$msg.headers.message-id$"
-            protocol="as2"
-            tempdir="%home%/../data/temp"/>
+    <module classname="com.example.hylaas2server.LoggingAS2ServletReceiverModule" />
+<!--    <module classname="com.helger.as2lib.processor.storage.MessageFileModule"-->
+<!--            filename="%home%/../data/$msg.sender.as2_id$-$msg.receiver.as2_id$/inbox/$msg.content-disposition.filename$-$msg.headers.message-id$"-->
+<!--            header="%home%/../data/$msg.sender.as2_id$-$msg.receiver.as2_id$/msgheaders/$date.yyyy-MM-dd$/$msg.content-disposition.filename$-$msg.headers.message-id$"-->
+<!--            protocol="as2"-->
+<!--            tempdir="%home%/../data/temp"/>-->
     <module classname="com.example.hylaas2server.SqsProcessorModule" />
 
   </processor>

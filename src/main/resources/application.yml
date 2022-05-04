@@ -2,3 +2,4 @@ server.port: 8082
 logging:
   level:
     com.helger: debug
+    com.helger.xservlet.requesttrack.RequestTrackingManager: info
