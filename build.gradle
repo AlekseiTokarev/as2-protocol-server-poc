@@ -21,6 +21,7 @@ dependencies {
 			platform('software.amazon.awssdk:bom:2.17.181'),
 			'software.amazon.awssdk:sqs',
 			'software.amazon.awssdk:sts',
+			'com.puppycrawl.tools:checkstyle:10.3',
 	)
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
