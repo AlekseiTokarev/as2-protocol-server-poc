@@ -39,14 +39,14 @@ public class SqsProcessorModule extends AbstractProcessorModule implements IProc
     @Override
     public void handle(@Nonnull String sAction, @Nonnull IMessage aMsg, @Nullable Map<String, Object> aOptions) throws AS2Exception {
         byte[] content;
-        try {
+        try{
             content = aMsg.getData().getInputStream().readAllBytes();
         } catch (IOException | MessagingException e) {
             throw new RuntimeException(e);
         }
         String message = new String(content);
 
-        log.info("publishing message: {}", message);
+        log.info("publishing message: {}", message) ;
         try {
             GetQueueUrlResponse queue = sqsClient.getQueueUrl(builder ->
                     builder.queueName("as2-queue").build()
