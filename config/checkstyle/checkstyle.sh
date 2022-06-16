@@ -4,5 +4,5 @@ java -Dconfig_loc=config/checkstyle -Dbasedir=$(pwd) \
   -jar config/checkstyle/checkstyle-10.3-all.jar \
   -c config/checkstyle/checkstyle.xml \
   -f sarif \
-  -o build/reports/codestyle-analysis.sarif \
-  $CHANGED_FILES
+  -o build/reports/checkstyle-analysis.sarif \
+  $@
