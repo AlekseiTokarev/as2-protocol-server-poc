@@ -46,7 +46,7 @@ public class SqsProcessorModule extends AbstractProcessorModule implements IProc
         }
         String message = new String(content);
 
-        log.info("publishing message: {}", message) ;
+        log.info("publishing message: {}", message);
         try {
             GetQueueUrlResponse queue = sqsClient.getQueueUrl(builder ->
                     builder.queueName("as2-queue").build()
