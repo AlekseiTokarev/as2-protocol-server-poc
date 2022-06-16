@@ -15,7 +15,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Run a one-line script
         run: |
           echo Hello, Hyla!
@@ -33,12 +35,12 @@ jobs:
 
       - name: find changed files
         run: |
-          echo before ${{ github.event.before }}
-          echo after ${{ github.event.after }}
-          echo "CHANGED_FILES=$(git diff --name-only ${{ github.event.before }}..${{ github.event.after }})" >> $GITHUB_ENV
-
-      - name: run checkstyle for changed files
-        run: ./config/checkstyle/checkstyle.sh
+          echo before ${{ github.event.pull_request.base.sha }}
+          echo after ${{ github.event.pull_request.head.sha }}
+          export CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }})
+          ./config/checkstyle/checkstyle.sh
+#      - name: run checkstyle for changed files
+#        run:
 
       - name: print analisis
         run: cat build/reports/codestyle-analysis.sarif
