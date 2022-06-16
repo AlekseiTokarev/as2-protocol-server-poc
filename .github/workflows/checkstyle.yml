@@ -1,4 +1,4 @@
-name: test-service
+name: checkstyle
 
 on:
   push:
