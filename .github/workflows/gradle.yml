@@ -1,0 +1,46 @@
+name: test-service
+
+on:
+  push:
+    branches:
+      - '^2[0-9].[0-9]{1,2}-(PRD|prd|AR|ar|TD|td)-[0-9]{3,5}'
+      - 'master'
+  pull_request:
+    branches:
+      - '^(PRD|prd|AR|ar|TD|td)-[0-9]{3,5}'
+      - '^2[0-9].[0-9]{1,2}-(PRD|prd|AR|ar|TD|td)-[0-9]{3,5}'
+      - 'master'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run a one-line script
+        run: |
+          echo Hello, Hyla!
+          echo ${{ github.actor }} has pushed a change to Hyla.
+          echo This code was committed by: ${{ github.event.commits[0].author.name }}
+
+      - name: Set output
+        id: vars
+        run: echo ::set-output name=branch_name::${GITHUB_REF#refs/*/}
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v1
+        with:
+          java-version: 17
+
+      - name: find changed files
+        run: |
+          echo before ${{ github.event.before }}
+          echo after ${{ github.event.after }}
+          echo "CHANGED_FILES=$(git diff --name-only ${{ github.event.before }}..${{ github.event.after }})" >> $GITHUB_ENV
+
+      - name: run checkstyle for changed files
+        run: ./config/checkstyle/checkstyle.sh
+
+      - name: print analisis
+        run: cat build/reports/codestyle-analysis.sarif
+
+

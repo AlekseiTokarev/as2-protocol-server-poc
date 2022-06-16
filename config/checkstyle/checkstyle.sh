@@ -5,4 +5,4 @@ java -Dconfig_loc=config/checkstyle -Dbasedir=$(pwd) \
   -c config/checkstyle/checkstyle.xml \
   -f sarif \
   -o build/reports/codestyle-analysis.sarif \
-  src/main/java/com/example/hylaas2server/SqsProcessorModule.java
+  $CHANGED_FILES
