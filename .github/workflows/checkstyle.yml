@@ -27,6 +27,7 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
+          distribution: 'temurin'
           java-version: 17
 
       - name: find changed files
@@ -46,16 +47,13 @@ jobs:
           echo ::set-output name=compressed-sarif::$(gzip -c build/reports/checkstyle-analysis.sarif | base64 -w0)
 
       - name: publish analysis
-        run: |
-          curl -X POST --location "https://api.github.com/repos/${GITHUB_REPOSITORY}/code-scanning/sarifs" \
-          -H "Accept: application/vnd.github.v3+json" \
-          -H "Content-Type: application/json" \
-          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          -d "{
-          \"commit_sha\": \"${{ github.event.pull_request.head.sha }}\",
-          \"ref\": \"refs/pull/${{ github.event.pull_request.number }}/head\",
-          \"sarif\": \"${{ steps.compress.outputs.compressed-sarif }}\",
-          \"tool_name\": \"checkstyle\"
-          }"
-
-
+        uses: actions/github-script
+        with:
+          script: |
+            octokit.rest.codeScanning.uploadSarif({
+            ...context.repo,
+            commit_sha: context.payload.pull_request.head.sha,
+            ref: `refs/pull/${context.payload.pull_request.number}/head`,
+            sarif: '${{ steps.compress.outputs.compressed-sarif }}',
+            tool_name: 'checkstyle',
+            });
