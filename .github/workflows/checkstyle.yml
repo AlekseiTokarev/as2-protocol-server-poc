@@ -50,7 +50,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            octokit.rest.codeScanning.uploadSarif({
+            github.rest.codeScanning.uploadSarif({
             ...context.repo,
             commit_sha: context.payload.pull_request.head.sha,
             ref: `refs/pull/${context.payload.pull_request.number}/head`,
