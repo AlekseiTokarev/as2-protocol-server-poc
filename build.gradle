@@ -1,31 +1,49 @@
+import java.nio.file.Paths
+
 plugins {
-	id 'org.springframework.boot' version '2.6.7'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
+    id 'org.springframework.boot' version '2.6.7'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
 }
 
 java {
-	toolchain {
-		languageVersion.set(JavaLanguageVersion.of(17))
-	}
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
 }
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation(
-			'org.springframework.boot:spring-boot-starter-web',
-			'com.helger.as2:as2-lib:4.10.1',
-			'com.helger.as2:as2-servlet:4.10.1',
-			platform('software.amazon.awssdk:bom:2.17.181'),
-			'software.amazon.awssdk:sqs',
-			'software.amazon.awssdk:sts',
-	)
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+    implementation(
+            'org.springframework.boot:spring-boot-starter-web',
+            'com.helger.as2:as2-lib:4.10.1',
+            'com.helger.as2:as2-servlet:4.10.1',
+            platform('software.amazon.awssdk:bom:2.17.181'),
+            'software.amazon.awssdk:sqs',
+            'software.amazon.awssdk:sts',
+    )
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
+}
+
+task findFiles {
+    println('finding..')
+    def currentDirectoryPath = Paths.get(System.getProperty('user.dir'))
+
+    def filesPath = fileTree("src/main")
+            .filter { it.isFile() }
+            .files.path
+    def files = filesPath.stream()
+            .map(path -> {
+                def pathAbsolute = Paths.get(path)
+                return currentDirectoryPath.relativize(pathAbsolute)
+            })
+            .toArray()
+    println(files)
 }
