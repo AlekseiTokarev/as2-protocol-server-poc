@@ -47,7 +47,7 @@ jobs:
           echo ::set-output name=compressed-sarif::$(gzip -c build/reports/checkstyle-analysis.sarif | base64 -w0)
 
       - name: publish analysis
-        uses: actions/github-script
+        uses: actions/github-script@v6
         with:
           script: |
             octokit.rest.codeScanning.uploadSarif({
