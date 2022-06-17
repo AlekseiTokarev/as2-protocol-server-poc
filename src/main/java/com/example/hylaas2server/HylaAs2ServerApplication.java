@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class HylaAs2ServerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(HylaAs2ServerApplication.class, args);
+		SpringApplication.run(HylaAs2ServerApplication.class, args  );
 	}
 
 }

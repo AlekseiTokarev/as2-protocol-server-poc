@@ -1,0 +1,59 @@
+name: checkstyle
+
+on:
+  push:
+    branches:
+      - '^2[0-9].[0-9]{1,2}-(PRD|prd|AR|ar|TD|td)-[0-9]{3,5}'
+      - 'master'
+  pull_request:
+    branches:
+      - '^(PRD|prd|AR|ar|TD|td)-[0-9]{3,5}'
+      - '^2[0-9].[0-9]{1,2}-(PRD|prd|AR|ar|TD|td)-[0-9]{3,5}'
+      - 'master'
+
+jobs:
+  checkstyle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Run a one-line script
+        run: |
+          echo Hello, Hyla!
+          echo ${{ github.actor }} has pushed a change to Hyla.
+          echo This code was committed by: ${{ github.event.commits[0].author.name }}
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 17
+
+      - name: find changed files
+        id: changed-files
+        run: |
+          echo ::set-output name=CHANGED_FILES::$(git diff --diff-filter=ACM --name-only ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }})
+
+      - name: run checkstyle for changed files
+        run: .github/checkstyle/checkstyle.sh ${{ steps.changed-files.outputs.CHANGED_FILES }}
+
+      - name: print analysis(remove)
+        run: cat build/reports/checkstyle-analysis.sarif
+
+      - name: compress sarif file
+        id: compress
+        run: |
+          echo ::set-output name=compressed-sarif::$(gzip -c build/reports/checkstyle-analysis.sarif | base64 -w0)
+
+      - name: publish analysis
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.codeScanning.uploadSarif({
+              ...context.repo,
+              commit_sha: context.payload.pull_request.head.sha,
+              ref: `refs/pull/${context.payload.pull_request.number}/head`,
+              sarif: '${{ steps.compress.outputs.compressed-sarif }}',
+              tool_name: 'checkstyle'
+            });
