@@ -51,9 +51,9 @@ jobs:
         with:
           script: |
             github.rest.codeScanning.uploadSarif({
-            ...context.repo,
-            commit_sha: context.payload.pull_request.head.sha,
-            ref: `refs/pull/${context.payload.pull_request.number}/head`,
-            sarif: '${{ steps.compress.outputs.compressed-sarif }}',
-            tool_name: 'checkstyle',
+              ...context.repo,
+              commit_sha: context.payload.pull_request.head.sha,
+              ref: `refs/pull/${context.payload.pull_request.number}/head`,
+              sarif: '${{ steps.compress.outputs.compressed-sarif }}',
+              tool_name: 'checkstyle'
             });
