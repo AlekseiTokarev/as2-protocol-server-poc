@@ -36,7 +36,7 @@ jobs:
           echo ::set-output name=CHANGED_FILES::$(git diff --diff-filter=ACM --name-only ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }})
 
       - name: run checkstyle for changed files
-        run: ./config/checkstyle/checkstyle.sh ${{ steps.changed-files.outputs.CHANGED_FILES }}
+        run: .github/checkstyle/checkstyle.sh ${{ steps.changed-files.outputs.CHANGED_FILES }}
 
       - name: print analysis(remove)
         run: cat build/reports/checkstyle-analysis.sarif
